@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 from rich import print
-
+import shutil
 def check_exists():
     filename= input("Filename: ")
     path= Path(filename)
@@ -39,4 +39,15 @@ def list_folder():
 
 
 
-     
+def backup_file():
+    folder = input("Folder to backup: ")
+    source = Path(folder)
+    if not source.exists():
+        print("not found")
+        return
+    
+    shutil.copytree(source, Path("backup") / source.name, dirs_exist_ok=True)
+    print(f"Whole folder copied to backup/{source.name}")
+
+
+backup_file()
