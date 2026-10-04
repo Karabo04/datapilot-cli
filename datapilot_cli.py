@@ -50,4 +50,30 @@ def backup_file():
     print(f"Whole folder copied to backup/{source.name}")
 
 
-backup_file()
+def main():
+    while True:
+        print("DATA PILOT\n")
+        print("1. Check file/folder")
+        print("2. Inspect file")
+        print("3. List folder")
+        print("4. Backup files")
+        choice= input("Choice--> ")
+        if choice == "1":
+            check_exists()
+        elif choice == "2":
+            inspect_file()
+        elif choice == "3":
+            list_folder()
+        elif choice == "4":
+            backup_file()
+        elif choice == "5":
+            print("Goodbye👋")  
+            break  
+        else:
+            print("Invalid input")
+
+
+main()            
+
+
+
