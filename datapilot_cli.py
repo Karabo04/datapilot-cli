@@ -116,6 +116,36 @@ def copy_item():
     shutil.copy2(source, dest_folder / source.name)
     print(f"{filename} copied to {dest_folder}")
 
+def delete_item():
+    name= input("file or folder to delete: ").strip()
+    path=Path(name)
+
+    if not path.exists():
+        found= list(Path.cwd().rglob(name))
+        if not found:
+            print("Not found")
+            return
+        path= found[0]
+
+    confirm = input(f"Are you sure want to delete {path}? (y/n): ").strip().lower()
+    if confirm != "y":
+        print("Deletion cancelled.")
+        return
+
+    try:
+        if path.is_file():
+            path.unlink()
+            print(f"File {path} deleted.")
+        elif path.is_dir():
+            try:
+                path.rmdir()
+                print(f"Folder {path} deleted.")
+            except OSError:
+
+                 shutil.rmtree(path)
+                 print(f"Deleted folder and its contents {path.name}")
+    except Exception as e:
+        print(f"Error deleting {path}: {e}")        
 
 def main():
     while True:
@@ -127,7 +157,8 @@ def main():
         print("5. Create file")
         print("6. Create folder")
         print("7. Copy file to folder")
-        print("8. Exit")
+        print("8. Delete file/folder")
+        print("9. Exit")
         choice = input("Choice --> ").strip()
         if choice == "1":
             check_exists()
@@ -142,8 +173,10 @@ def main():
         elif choice == "6":
             create_folder()
         elif choice == "7":
-            copy_item()            
+            copy_item() 
         elif choice == "8":
+            delete_item()              
+        elif choice == "9":
             print("Goodbye👋")
             break
         else:
