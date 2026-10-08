@@ -68,6 +68,55 @@ def backup_file():
     shutil.copytree(source, Path("backup") / source.name, dirs_exist_ok=True)
     print(f"Whole folder copied to backup/{source.name}")
 
+def create_file():
+    filename = input("Filename: ").strip()
+    path = Path(filename)
+    try:
+        path.touch(exist_ok=False)
+        print(f"created {filename}")
+    except FileExistsError:
+        print("file exists")
+
+def create_folder():
+    foldername = input("Folder name: ").strip()
+    path = Path(foldername)
+    try:
+        path.mkdir(exist_ok=False)
+        print(f"created {foldername}")
+    except FileExistsError:
+        print("Folder exists")
+
+def copy_item():
+    filename = input("File: ").strip()
+    folder = input("Folder: ").strip()
+
+    source = Path(filename)
+    dest_folder = Path(folder)
+
+    # auto-find file if not in current location
+    if not source.exists():
+        found = list(Path.cwd().rglob(filename))
+        if not found:
+            print("File not found")
+            return
+        source = found[0]
+
+    # auto-find folder if not in current location
+    if not dest_folder.exists():
+        found = list(Path.cwd().rglob(folder))
+        if not found:
+            print("Can't find folder")
+            return
+        dest_folder = found[0]
+
+    if not dest_folder.is_dir():
+        print(f"{folder} is not a folder")
+        return
+
+    shutil.copy2(source, dest_folder / source.name)
+    print(f"{filename} copied to {dest_folder}")
+
+
 def main():
     while True:
         print("\nDATA PILOT")
@@ -75,7 +124,10 @@ def main():
         print("2. Inspect file")
         print("3. List folder")
         print("4. Backup files")
-        print("5. Exit")
+        print("5. Create file")
+        print("6. Create folder")
+        print("7. Copy file to folder")
+        print("8. Exit")
         choice = input("Choice --> ").strip()
         if choice == "1":
             check_exists()
@@ -86,6 +138,12 @@ def main():
         elif choice == "4":
             backup_file()
         elif choice == "5":
+            create_file()
+        elif choice == "6":
+            create_folder()
+        elif choice == "7":
+            copy_item()            
+        elif choice == "8":
             print("Goodbye👋")
             break
         else:
