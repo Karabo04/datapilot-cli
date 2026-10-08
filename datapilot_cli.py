@@ -33,6 +33,23 @@ def inspect_file():
     print(f"Location: {path.resolve()}")
     print(f"extension: {path.suffix}")
     print(f"size: {path.stat().st_size} bytes")
+    print(f"modified: {datetime.fromtimestamp(path.stat().st_mtime)}")
+
+     # Use pandas + json
+    try:
+        if path.suffix == ".csv":
+            df = pd.read_csv(path)
+            print(f"\nRows: {len(df)} | Columns: {list(df.columns)}")
+            print(df.head(3))
+        elif path.suffix == ".json":
+            data = json.loads(path.read_text())
+            print(f"\nJSON preview: {str(data)[:300]}")
+        elif path.suffix in [".txt", ".py", ".md"]:
+            print("\n--- Preview (first 5 lines) ---")
+            print("\n".join(path.read_text().splitlines()[:5]))
+    except Exception as e:
+        print(f"Preview error: {e}")
+ 
 
 def list_folder():
     folder = input("Folder name: ").strip()

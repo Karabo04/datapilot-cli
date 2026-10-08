@@ -1,27 +1,17 @@
-# 🚀 datapilot-cli
-### Terminal File Commander + CSV Data Doctor
-Powered by Rich + Pathlib + Shutil + Pandas
+cat > README.md << 'EOF'
+# DataPilot CLI 🧭
 
-> Where am I? What files? Copy, Move, Rename, Delete with safety checks, plus CSV missing values & cleaning — all in a beautiful Rich loop menu.
+A simple Python CLI file manager for data projects.
 
-#### Features
-- **[1-6] File Search:** Check exists, inspect size/extension, search by name, glob *.csv, list folder (pathlib)
-- **[7-12] Actions:** Create file/folder, copy (shutil.copy), move/rename (shutil.move), delete with YES confirmation
-- **[13-15] Data Doctor:** Check missing values, check duplicates, clean & save (pandas)
+Built by Karabo04 - Fedora Linux | Python | Pathlib | Pandas
 
-#### Loop Logic
-```
-while True:
-  show menu
-  choice = input()
-  if choice == 15: clean inside then save OUTSIDE inner loop
-  if choice == 0: break
-```
+## Features
+- 🔍 Check & auto-find files anywhere
+- 📄 Inspect CSV/JSON/TXT with pandas
+- 📂 List folders, create files/folders
+- 📦 Copy & backup with timestamps
+- 🗑️ Safe delete with confirmation
 
-#### Run
-```
-pip install -r requirements.txt
+## Run
+```bash
 python datapilot_cli.py
-```
-
-Repo: datapilot-cli
