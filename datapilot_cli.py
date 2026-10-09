@@ -35,7 +35,6 @@ def inspect_file():
     print(f"size: {path.stat().st_size} bytes")
     print(f"modified: {datetime.fromtimestamp(path.stat().st_mtime)}")
 
-     # Use pandas + json
     try:
         if path.suffix == ".csv":
             df = pd.read_csv(path)
@@ -164,6 +163,49 @@ def delete_item():
     except Exception as e:
         print(f"Error deleting {path}: {e}")        
 
+def check_missing():
+    Filename= input("CSV FILE: ").strip()
+    path= Path(Filename)
+    if not path.exists():
+        found= list(Path.cwd().rglob(Filename))
+        if not found:
+            print("Not found")
+            return
+        path= found[0]
+
+    df= pd.read_csv(path)
+    print(df.isnull().sum())
+
+def check_duplicates():
+    Filename= input("CSV FILE: ").strip()
+    path= Path(Filename)
+    if not path.exists():
+        found= list(Path.cwd().rglob(Filename))
+        if not found:
+            print("Not found")
+            return
+        path= found[0]
+
+    df= pd.read_csv(path)
+    print(f"Duplicates: {df.duplicated().sum()}")
+    print(df[df.duplicated()])
+
+def clean_save():
+    Filename= input("CSV FILE: ").strip()
+    path= Path(Filename)
+    if not path.exists():
+        found= list(Path.cwd().rglob(Filename))
+        if not found:
+            print("Not found")
+            return
+        path= found[0]      
+
+    df= pd.read_csv(path)
+    df_clean= df.drop_duplicates().dropna()
+    save_path= path.parent / f"cleaned_{path.name}"
+    df_clean.to_csv(save_path, index=False)
+    print(f"saved clean file to {save_path}")      
+
 def main():
     while True:
         print("\nDATA PILOT")
@@ -175,7 +217,10 @@ def main():
         print("6. Create folder")
         print("7. Copy file to folder")
         print("8. Delete file/folder")
-        print("9. Exit")
+        print("9. Check missing values (CSV)")
+        print("10. Check duplicates (CSV)")
+        print("11. Clean & save CSV")
+        print("12. Exit")
         choice = input("Choice --> ").strip()
         if choice == "1":
             check_exists()
@@ -192,8 +237,14 @@ def main():
         elif choice == "7":
             copy_item() 
         elif choice == "8":
-            delete_item()              
+            delete_item() 
         elif choice == "9":
+            check_missing()
+        elif choice == "10":
+            check_duplicates()
+        elif choice == "11":
+            clean_save()                                      
+        elif choice == "12":
             print("Goodbye👋")
             break
         else:
